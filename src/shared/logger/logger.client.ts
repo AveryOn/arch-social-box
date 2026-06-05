@@ -3,7 +3,7 @@ import {
   logContext,
   type LogEvent,
   type LogLevel
-} from '~/shared/logger/index'
+} from '~/shared/logger'
 
 export class Logger {
   constructor(
@@ -60,7 +60,6 @@ export class Logger {
         options?.callstack === true ? new Error().stack : undefined,
       pid: process.pid
     }
-
     this.worker?.send(event)
   }
 }

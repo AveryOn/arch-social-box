@@ -21,15 +21,15 @@ function formatLog(event: LogEvent): string {
   const scope = event.scope ? chalk.cyan(`[${event.scope}]`) : ''
 
   const requestId = event.requestId
-    ? chalk.gray(`[request:${event.requestId}]`)
+    ? chalk.hex('#b5ffdb')(`[request:${event.requestId}]`)
     : ''
 
   return [
-    chalk.gray(event.timestamp),
+    chalk.hex('#c1f2ff')(event.timestamp),
     level,
     scope,
     requestId,
-    event.message
+    chalk.hex('#ffffff')(event.message)
   ]
     .filter(Boolean)
     .join(' ')
@@ -38,14 +38,14 @@ function formatLog(event: LogEvent): string {
 function colorLevel(level: LogEvent['level']): string {
   switch (level) {
     case 'debug':
-      return chalk.gray('[DEBUG]')
+      return chalk.hex('#ffddff').bold('[DEBUG]')
     case 'info':
-      return chalk.blue('[INFO]')
+      return chalk.hex('#81c2ff').bold('[INFO]')
     case 'warn':
-      return chalk.yellow('[WARN]')
+      return chalk.hex('#ffb581').bold('[WARN]')
     case 'error':
-      return chalk.red('[ERROR]')
+      return chalk.hex('#e35b6b').bold('[ERROR]')
     case 'fatal':
-      return chalk.bgRed.white('[FATAL]')
+      return chalk.bgHex('#f76971').hex('#000000').bold('[FATAL]')
   }
 }

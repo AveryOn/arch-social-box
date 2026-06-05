@@ -5,12 +5,15 @@ import {
   ServerPortConfig
 } from '~/transports/ports/server.port'
 import { env } from '~/config/env'
-import { logContext } from '~/shared/logger'
+import { logContext, Logger } from '~/shared/logger'
 
 export class ExpressServer extends ServerPort {
   private server: express.Express
 
-  constructor(protected readonly config: ServerPortConfig) {
+  constructor(
+    protected readonly config: ServerPortConfig,
+    private readonly logger: Logger
+  ) {
     super(config)
     this.server = express()
     this.initMiddlewares()
@@ -34,6 +37,7 @@ export class ExpressServer extends ServerPort {
 
   initHandlers(): void {
     this.server.get('/health', (_request, response) => {
+      this.logger.info('HEALTH REQUEST GO...')
       response.json({
         status: 'ok'
       })
