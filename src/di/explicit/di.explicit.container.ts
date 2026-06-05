@@ -10,10 +10,8 @@ export class ExplicitContainer {
 
   register(provider: ExplicitProvider): void
   register(provider: ExplicitProvider[]): void
-  register(oneProviderOrMany: ExplicitProvider | ExplicitProvider[]): void {
-    const providers = Array.isArray(oneProviderOrMany)
-      ? oneProviderOrMany
-      : [oneProviderOrMany]
+  register(provider: ExplicitProvider | ExplicitProvider[]): void {
+    const providers = Array.isArray(provider) ? provider : [provider]
 
     for (const provider of providers) {
       this.providers.set(provider.token, provider)
