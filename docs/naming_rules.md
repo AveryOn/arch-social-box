@@ -45,72 +45,63 @@
 ### Пример общей схемы:
 
  ```plain
- src/
-   processes/
-     main.process.ts
- 
-   transports/
-     express/
-       express.server.ts
-       express.module.ts
-       handlers/
-         user.handler.ts
-       routes/
-         user.routes.ts
- 
-     hono/
-       hono.server.ts
-       hono.module.ts
-       handlers/
-         user.handler.ts
-       routes/
-         user.routes.ts
- 
-     grpc/
-       grpc.server.ts
-       grpc.module.ts
-       handlers/
-         user.handler.ts
-       contracts/
-         user.contract.ts
- 
-   domain/
-     users/
-       user.module.ts
-       entities/
-         user.entity.ts
-       use-cases/
-         create-user.use-case.ts
-       ports/
-         user-repository.port.ts
- 
-   database/
-     drizzle/
-       drizzle.module.ts
-       drizzle.client.ts
-       repositories/
-         user-repository.adapter.ts
- 
-     prisma/
-       prisma.module.ts
-       prisma.client.ts
-       repositories/
-         user-repository.adapter.ts
- 
-   di/
-     explicit/
-       explicit.container.ts
-       explicit.provider.ts
-       explicit.module.ts
- 
-     decorators/
-       decorators.container.ts
-       decorators.provider.ts
-       decorators.module.ts
- 
-   shared/
-     errors/
-       app.error.ts
+    src/
+    ├── processes/
+    │   └── main.process.ts
+    ├── transports/
+    │   ├── express/
+    │   │   ├── express.server.ts
+    │   │   ├── express.module.ts
+    │   │   ├── handlers/
+    │   │   │   └── user.handler.ts
+    │   │   └── routes/
+    │   │       └── user.routes.ts
+    │   ├── hono/
+    │   │   ├── hono.server.ts
+    │   │   ├── hono.module.ts
+    │   │   ├── handlers/
+    │   │   │   └── user.handler.ts
+    │   │   └── routes/
+    │   │       └── user.routes.ts
+    │   └── grpc/
+    │       ├── grpc.server.ts
+    │       ├── grpc.module.ts
+    │       ├── handlers/
+    │       │   └── user.handler.ts
+    │       └── contracts/
+    │           └── user.contract.ts
+    ├── domain/
+    │   └── users/
+    │       ├── user.module.ts
+    │       ├── entities/
+    │       │   └── user.entity.ts
+    │       ├── use-cases/
+    │       │   └── create-user.use-case.ts
+    │       └── ports/
+    │           └── user-repository.port.ts
+    ├── database/
+    │   ├── drizzle/
+    │   │   ├── drizzle.module.ts
+    │   │   ├── drizzle.client.ts
+    │   │   └── repositories/
+    │   │       └── user-repository.adapter.ts
+    │   └── prisma/
+    │       ├── prisma.module.ts
+    │       ├── prisma.client.ts
+    │       └── repositories/
+    │           └── user-repository.adapter.ts
+    ├── di/
+    │   ├── explicit/
+    │   │   ├── explicit.container.ts
+    │   │   ├── explicit.provider.ts
+    │   │   └── explicit.module.ts
+    │   └── decorators/
+    │       ├── decorators.container.ts
+    │       ├── decorators.provider.ts
+    │       └── decorators.module.ts
+    └── shared/
+        └── errors/
+            └── app.error.ts
  ```
 
 ---
