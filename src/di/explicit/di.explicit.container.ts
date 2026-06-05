@@ -20,22 +20,30 @@ export class ExplicitContainer {
     }
   }
 
-  resolve<T>(token: ExplicitToken): T {
-    if (this.instances.has(token)) {
-      return this.instances.get(token) as T
+  resolve<T>(token: ExplicitToken): T
+  resolve<T>(token: ExplicitToken[]): T[]
+  resolve<T>(token: ExplicitToken | ExplicitToken[]): T | T[] {
+    const isArray = Array.isArray(token)
+    const tokens = isArray ? token : [token]
+    const instances: T[] = []
+    for (const t of tokens) {
+      if (this.instances.has(t)) {
+        return this.instances.get(t) as T
+      }
+
+      const provider = this.providers.get(t)
+
+      if (!provider) {
+        throw new Error(`DI provider not found: ${String(t)}`)
+      }
+
+      const instance = this.createInstance(provider)
+
+      this.instances.set(t, instance)
+
+      instances.push(instance as T)
     }
-
-    const provider = this.providers.get(token)
-
-    if (!provider) {
-      throw new Error(`DI provider not found: ${String(token)}`)
-    }
-
-    const instance = this.createInstance(provider)
-
-    this.instances.set(token, instance)
-
-    return instance as T
+    return isArray ? instances : instances[0]
   }
 
   private createInstance(provider: ExplicitProvider): unknown {
@@ -44,22 +52,18 @@ export class ExplicitContainer {
     }
 
     if ('useFactory' in provider) {
-      const dependencies = this.resolveDependencies(provider.inject)
+      const dependencies = this.resolve(provider.inject ?? [])
 
       return provider.useFactory(...dependencies)
     }
 
     if ('useClass' in provider) {
-      const dependencies = this.resolveDependencies(provider.inject)
+      const dependencies = this.resolve(provider.inject ?? [])
 
       return this.instantiate(provider.useClass, dependencies)
     }
 
     throw new Error('Invalid DI provider')
-  }
-
-  private resolveDependencies(tokens: ExplicitToken[] = []): unknown[] {
-    return tokens.map((token) => this.resolve(token))
   }
 
   private instantiate<T>(

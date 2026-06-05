@@ -5,6 +5,7 @@ import {
   ServerPortConfig
 } from '~/transports/ports/server.port'
 import { env } from '~/config/env'
+import { logContext } from '~/shared/logger'
 
 export class ExpressServer extends ServerPort {
   private server: express.Express
@@ -32,7 +33,6 @@ export class ExpressServer extends ServerPort {
   }
 
   initHandlers(): void {
-
     this.server.get('/health', (_request, response) => {
       response.json({
         status: 'ok'
@@ -42,6 +42,11 @@ export class ExpressServer extends ServerPort {
   }
   initMiddlewares(): void {
     this.server.use(express.json())
+    this.server.use((_req, _res, next) => {
+      logContext.run({ requestId: crypto.randomUUID() }, () => {
+        next()
+      })
+    })
     this.server.use(
       (
         error: unknown,
