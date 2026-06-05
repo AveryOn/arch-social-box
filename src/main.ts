@@ -1,8 +1,11 @@
-import { createApp } from '~/app'
-import { env } from '~/env'
+import { env } from '~/config/env'
+import { createExplicitModule } from '~/di/explicit/di.explicit.module'
+import { ExpressServer } from '~/transports/express/express.server'
 
-const app = createApp()
-
-app.listen(env.APP_PORT, env.APP_HOST, () => {
-  console.log(`Server started: http://${env.APP_HOST}:${env.APP_PORT}`)
+const server = new ExpressServer({
+  DIContainer: createExplicitModule(),
+  host: env.APP_HOST,
+  port: env.APP_PORT
 })
+
+server.start()
