@@ -52,6 +52,12 @@ export class ExplicitContainer {
     if ('useClass' in provider) {
       const dependencies = this.resolveManyDeps(provider.inject)
 
+      if(dependencies.length !== provider.useClass.length) {
+        throw new Error(
+          `Invalid inject count for ${provider.useClass.name}`
+        )
+      }
+
       return this.instantiate(provider.useClass, dependencies)
     }
 
