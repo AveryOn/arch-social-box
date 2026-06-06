@@ -1,0 +1,5 @@
+export enum DecoratorToken {
+  USER_REPO_PORT = 'USER_REPO_PORT',
+  USER_CREATE_USE_CASE = 'USER_CREATE_USE_CASE',
+  LOGGER = 'LOGGER'
+}

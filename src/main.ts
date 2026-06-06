@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { env } from '~/config/env'
 import { createExplicitModule } from '~/di/explicit/di.explicit.module'
 import { Logger } from '~/shared/logger'
