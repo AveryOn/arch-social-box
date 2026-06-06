@@ -45,7 +45,7 @@ export class ExplicitContainer {
 
     if ('useFactory' in provider) {
       const dependencies = this.resolveManyDeps(provider.inject)
-      if(dependencies.length !== provider.useFactory.length) {
+      if (dependencies.length !== provider.useFactory.length) {
         throw new Error(
           `Invalid inject count for ${provider.token.toString()}`
         )
@@ -57,7 +57,7 @@ export class ExplicitContainer {
     if ('useClass' in provider) {
       const dependencies = this.resolveManyDeps(provider.inject)
 
-      if(dependencies.length !== provider.useClass.length) {
+      if (dependencies.length !== provider.useClass.length) {
         throw new Error(
           `Invalid inject count for ${provider.useClass.name}`
         )

@@ -6,7 +6,7 @@ export enum DecoratorToken {
   LOGGER = 'LOGGER'
 }
 
-export type ClassConstructor<T = unknown> = new  (...args: any[]) => T
+export type ClassConstructor<T = unknown> = new (...args: any[]) => T
 
 export type DecoratorProvider =
   | ClassProvider
@@ -14,7 +14,7 @@ export type DecoratorProvider =
   | FactoryProvider
 
 export interface ClassProvider {
-  token: DecoratorToken,
+  token: DecoratorToken
   useClass: ClassConstructor
 }
 
@@ -24,8 +24,8 @@ export interface ValueProvider {
 }
 
 export interface FactoryProvider {
-  token: DecoratorToken,
-  useFactory: (...ars: unknown[]) => unknown,
+  token: DecoratorToken
+  useFactory: (...ars: unknown[]) => unknown
   inject?: DecoratorToken[]
 }
 
@@ -33,13 +33,14 @@ export interface Function {
   /**
    * Returns the name of the function. Function names are read-only and can not be changed.
    */
-  readonly name: string;
+  readonly name: string
 }
 
-export type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+export type ClassDecorator = <TFunction extends Function>(
+  target: TFunction
+) => TFunction | void
 
 export interface InjectMetadata {
   index: number
   token: DecoratorToken
 }
-

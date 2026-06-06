@@ -1,9 +1,5 @@
 import { fork, type ChildProcess } from 'node:child_process'
-import {
-  logContext,
-  type LogEvent,
-  type LogLevel
-} from '~/shared/logger'
+import { logContext, type LogEvent, type LogLevel } from '~/shared/logger'
 
 export class Logger {
   constructor(
