@@ -3,6 +3,8 @@
     "target": "ES2022",
     "module": "preserve",
     "moduleResolution": "bundler",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
 
     "rootDir": "src",
     "outDir": "dist",
