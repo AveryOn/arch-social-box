@@ -83,16 +83,20 @@ export class DecoratorContainer {
     }
 
     if (this.isClassProvider(provider)) {
-      const targetClass = provider.useClass
+      const TargetClass = provider.useClass
 
-      if (this.isInjectable(targetClass)) {
-        //
+      if (this.isInjectable(TargetClass)) {
+        throw new Error(`Class is not injectable: ${TargetClass.name}`)
       }
 
-      Reflect.getMetadata(INJECT_METADATA_KEY, this)
+      const deps = this.getInjectMetadata(TargetClass)
+        .sort((a, b) => a.index - b.index)
+        .map((metadata) => this.resolve(metadata.token))
+
+      return new TargetClass(...deps)
     }
 
-    if (this) return provider
+    throw new Error('Invalid provider')
   }
 
   private isClassProvider(
