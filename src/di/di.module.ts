@@ -4,18 +4,23 @@ import { DiContainerPort } from '~/di/ports/di.container.port'
 import { DiMode, DiProvider } from '~/di/types'
 import { Logger } from '~/shared/logger'
 
-export class DiDecoratorModule {
+export class DiModule {
   private container: DiContainerPort
 
-  constructor(mode: DiMode, deps: DiProvider[]) {
-    const modeIsValide = [DiMode.decorator, DiMode.explicit].includes(mode)
+  bootstrap(deps: DiProvider[]): DiContainerPort {
+    this.container.register(deps)
+    return this.container
+  }
+
+  constructor(mode: keyof typeof DiMode) {
+    const modeIsValide = [DiMode.decorator, DiMode.explicit].includes(
+      mode as DiMode
+    )
     if (!modeIsValide) throw Logger.create().error('Mode is not valide')
 
     this.container = new {
       [DiMode.decorator]: DecoratorContainer,
       [DiMode.explicit]: ExplicitContainer
     }[mode]()
-
-    this.container.register(deps)
   }
 }

@@ -1,7 +1,7 @@
-import { ExplicitContainer } from '~/di/explicit'
+import { DiContainerPort } from '~/di/ports/di.container.port'
 
 export interface ServerPortConfig {
-  DIContainer: ExplicitContainer
+  DIContainer: DiContainerPort
   host: string
   port: number
 }
