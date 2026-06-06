@@ -1,1 +1,7 @@
+export * from '~/di/decorator/di.decorator.container'
+export * from '~/di/decorator/di.decorator.inject'
+export * from '~/di/decorator/di.decorator.injectable'
+export * from '~/di/decorator/di.decorator.metadata'
+export * from '~/di/decorator/di.decorator.provider'
 export * from '~/di/decorator/di.decorator.token'
+export * from '~/di/decorator/di.decorator.type'
