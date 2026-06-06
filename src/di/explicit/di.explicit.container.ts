@@ -1,4 +1,4 @@
-import { DiContainerPort } from '~/di/ports/di.port'
+import { DiContainerPort } from '~/di/ports/di.container.port'
 import { ClassConstructor, DiProvider, DiToken } from '~/di/types'
 
 export class ExplicitContainer implements DiContainerPort {

@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { DiContainerPort } from '~/di/ports/di.port'
+import { DiContainerPort } from '~/di/ports/di.container.port'
 import {
   ClassDiProvider,
   DiProvider,
