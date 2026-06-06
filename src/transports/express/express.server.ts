@@ -5,7 +5,7 @@ import {
   ServerPortConfig
 } from '~/transports/ports/server.port'
 import { env } from '~/config/env'
-import { logContext, Logger } from '~/shared/logger'
+import { Logger } from '~/shared/logger'
 
 export class ExpressServer extends ServerPort {
   private server: express.Express
@@ -47,7 +47,7 @@ export class ExpressServer extends ServerPort {
   initMiddlewares(): void {
     this.server.use(express.json())
     this.server.use((_req, _res, next) => {
-      logContext.run({ requestId: crypto.randomUUID() }, () => {
+      Logger.logContext.run({ requestId: crypto.randomUUID() }, () => {
         next()
       })
     })

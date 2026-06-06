@@ -1,7 +1,10 @@
+import { AsyncLocalStorage } from 'node:async_hooks'
 import { fork, type ChildProcess } from 'node:child_process'
-import { logContext, type LogEvent, type LogLevel } from '~/shared/logger'
+import { RequestLogContext, type LogEvent, type LogLevel } from '~/shared/logger'
 
 export class Logger {
+  static logContext = new AsyncLocalStorage<RequestLogContext>()
+
   constructor(
     private readonly scopeName?: string,
     private readonly worker?: ChildProcess
@@ -42,7 +45,7 @@ export class Logger {
     message: string,
     options?: LogOptions
   ): void {
-    const context = logContext.getStore()
+    const context = Logger.logContext.getStore()
 
     const event: LogEvent = {
       timestamp: new Date().toISOString(),

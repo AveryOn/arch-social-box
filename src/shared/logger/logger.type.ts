@@ -16,3 +16,8 @@ export interface LogEvent {
 
   pid: number
 }
+
+export interface RequestLogContext {
+  requestId: string
+  traceId?: string
+}
