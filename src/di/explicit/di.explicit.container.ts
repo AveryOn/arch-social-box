@@ -1,16 +1,12 @@
-import type {
-  ClassConstructor,
-  ExplicitProvider
-} from '~/di/explicit/di.explicit.provider'
-import type { ExplicitToken } from '~/di/explicit/di.explicit.token'
+import { ClassConstructor, DiProvider, DiToken } from '~/di/types'
 
 export class ExplicitContainer {
-  private readonly providers = new Map<ExplicitToken, ExplicitProvider>()
-  private readonly instances = new Map<ExplicitToken, unknown>()
+  private readonly providers = new Map<DiToken, DiProvider>()
+  private readonly instances = new Map<DiToken, unknown>()
 
-  register(provider: ExplicitProvider): void
-  register(provider: ExplicitProvider[]): void
-  register(oneProviderOrMany: ExplicitProvider | ExplicitProvider[]): void {
+  register(provider: DiProvider): void
+  register(provider: DiProvider[]): void
+  register(oneProviderOrMany: DiProvider | DiProvider[]): void {
     const providers = Array.isArray(oneProviderOrMany)
       ? oneProviderOrMany
       : [oneProviderOrMany]
@@ -20,7 +16,7 @@ export class ExplicitContainer {
     }
   }
 
-  resolve<T>(token: ExplicitToken): T {
+  resolve<T>(token: DiToken): T {
     if (this.instances.has(token)) {
       return this.instances.get(token) as T
     }
@@ -38,7 +34,7 @@ export class ExplicitContainer {
     return instance as T
   }
 
-  private createInstance(provider: ExplicitProvider): unknown {
+  private createInstance(provider: DiProvider): unknown {
     if ('useValue' in provider) {
       return provider.useValue
     }
@@ -69,7 +65,7 @@ export class ExplicitContainer {
     throw new Error('Invalid DI provider')
   }
 
-  private resolveManyDeps(tokens: ExplicitToken[] = []): unknown[] {
+  private resolveManyDeps(tokens: DiToken[] = []): unknown[] {
     return tokens.map((token) => this.resolve(token))
   }
 

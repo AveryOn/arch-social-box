@@ -1,14 +1,13 @@
 import 'reflect-metadata'
-import type {
-  DecoratorToken,
-  DecoratorProvider,
-  InjectMetadata,
-  ValueProvider,
-  ClassDecorator,
+import {
+  ClassDiProvider,
+  DiProvider,
+  DiToken,
+  FactoryDiProvider,
   Function,
-  FactoryProvider,
-  ClassProvider
-} from '~/di/decorator'
+  InjectMetadata,
+  ValueDiProvider
+} from '~/di/types'
 
 export const INJECT_METADATA_KEY = Symbol('di:inject')
 const INJECTABLE_METADATA_KEY = Symbol('di:injectable')
@@ -19,7 +18,7 @@ export function Injectable(): ClassDecorator {
   }
 }
 
-export function Inject(token: DecoratorToken): ParameterDecorator {
+export function Inject(token: DiToken): ParameterDecorator {
   return (target, _propertyKey, parameterIndex) => {
     const existingMetadata = Reflect.getMetadata(
       INJECT_METADATA_KEY,
@@ -38,12 +37,12 @@ export function Inject(token: DecoratorToken): ParameterDecorator {
 }
 
 export class DecoratorContainer {
-  private readonly providers = new Map<DecoratorToken, DecoratorProvider>()
-  private readonly instances = new Map<DecoratorToken, unknown>()
+  private readonly providers = new Map<DiToken, DiProvider>()
+  private readonly instances = new Map<DiToken, unknown>()
 
-  register(provider: DecoratorProvider): void
-  register(provider: DecoratorProvider[]): void
-  register(provider: DecoratorProvider | DecoratorProvider[]): void {
+  register(provider: DiProvider): void
+  register(provider: DiProvider[]): void
+  register(provider: DiProvider | DiProvider[]): void {
     if (Array.isArray(provider)) {
       for (const p of provider) {
         this.providers.set(p.token, p)
@@ -54,7 +53,7 @@ export class DecoratorContainer {
     return void 1
   }
 
-  resolve<T = unknown>(token: DecoratorToken): T {
+  resolve<T = unknown>(token: DiToken): T {
     const provider = this.providers.get(token)
 
     if (!provider) {
@@ -70,7 +69,7 @@ export class DecoratorContainer {
     return instance as T
   }
 
-  private createInstance(provider: DecoratorProvider): unknown {
+  private createInstance(provider: DiProvider): unknown {
     if (this.isValueProvider(provider)) {
       return provider.useValue
     }
@@ -100,20 +99,20 @@ export class DecoratorContainer {
   }
 
   private isClassProvider(
-    provider: ClassProvider
-  ): provider is ClassProvider {
+    provider: ClassDiProvider
+  ): provider is ClassDiProvider {
     return 'useClass' in provider
   }
 
   private isValueProvider(
-    provider: DecoratorProvider
-  ): provider is ValueProvider {
+    provider: DiProvider
+  ): provider is ValueDiProvider {
     return 'useValue' in provider
   }
 
   private isFactoryProvider(
-    provider: DecoratorProvider
-  ): provider is FactoryProvider {
+    provider: DiProvider
+  ): provider is FactoryDiProvider {
     return 'useFactory' in provider
   }
 
