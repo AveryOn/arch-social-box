@@ -23,7 +23,7 @@ export class ExpressServer extends ServerPort {
   start(): Promise<void> {
     return new Promise((resolve) => {
       this.server.listen(env.APP_PORT, env.APP_HOST, () => {
-        console.log(
+        this.logger.info(
           `Server started: http://${this.config.host}:${this.config.port}`
         )
         resolve()
