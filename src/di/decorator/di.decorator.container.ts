@@ -34,7 +34,9 @@ export class DecoratorContainer implements DiContainerPort {
     const provider = this.providers.get(token)
 
     if (!provider) {
-      throw new Error(`provider is not registered by Token=${String(token)}`)
+      throw new Error(
+        `provider is not registered by Token=${String(token)}`
+      )
     }
 
     const instance = this.instances.get(token)

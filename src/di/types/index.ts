@@ -31,4 +31,9 @@ export interface InjectMetadata {
   token: DiToken
 }
 
+export enum DiMode {
+  explicit = 'explicit',
+  decorator = 'decorator'
+}
+
 export * from '~/di/types/lib.type'
