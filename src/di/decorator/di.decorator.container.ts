@@ -9,32 +9,8 @@ import {
   ValueDiProvider
 } from '~/di/types'
 
-export const INJECT_METADATA_KEY = Symbol('di:inject')
+const INJECT_METADATA_KEY = Symbol('di:inject')
 const INJECTABLE_METADATA_KEY = Symbol('di:injectable')
-
-export function Injectable(): ClassDecorator {
-  return (target) => {
-    Reflect.defineMetadata(INJECTABLE_METADATA_KEY, true, target)
-  }
-}
-
-export function Inject(token: DiToken): ParameterDecorator {
-  return (target, _propertyKey, parameterIndex) => {
-    const existingMetadata = Reflect.getMetadata(
-      INJECT_METADATA_KEY,
-      target
-    ) as InjectMetadata[] | undefined
-
-    const metadata: InjectMetadata[] = existingMetadata ?? []
-
-    metadata.push({
-      index: parameterIndex,
-      token
-    })
-
-    Reflect.defineMetadata(INJECT_METADATA_KEY, metadata, target)
-  }
-}
 
 export class DecoratorContainer {
   private readonly providers = new Map<DiToken, DiProvider>()
@@ -57,7 +33,7 @@ export class DecoratorContainer {
     const provider = this.providers.get(token)
 
     if (!provider) {
-      throw new Error(`provider is not registered by Token=${token}`)
+      throw new Error(`provider is not registered by Token=${String(token)}`)
     }
 
     const instance = this.instances.get(token)
@@ -126,5 +102,29 @@ export class DecoratorContainer {
 
   private isInjectable(target: Function): boolean {
     return Reflect.getMetadata(INJECTABLE_METADATA_KEY, target) === true
+  }
+}
+
+export function Injectable(): ClassDecorator {
+  return (target) => {
+    Reflect.defineMetadata(INJECTABLE_METADATA_KEY, true, target)
+  }
+}
+
+export function Inject(token: DiToken): ParameterDecorator {
+  return (target, _propertyKey, parameterIndex) => {
+    const existingMetadata = Reflect.getMetadata(
+      INJECT_METADATA_KEY,
+      target
+    ) as InjectMetadata[] | undefined
+
+    const metadata: InjectMetadata[] = existingMetadata ?? []
+
+    metadata.push({
+      index: parameterIndex,
+      token
+    })
+
+    Reflect.defineMetadata(INJECT_METADATA_KEY, metadata, target)
   }
 }
