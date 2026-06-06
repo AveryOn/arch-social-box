@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import type { DecoratorToken, DecoratorProvider, InjectMetadata, ValueProvider, ClassDecorator, Function } from "~/di/decorator";
+import type { DecoratorToken, DecoratorProvider, InjectMetadata, ValueProvider, ClassDecorator, Function, FactoryProvider, ClassProvider } from "~/di/decorator";
 
 
 export const INJECT_METADATA_KEY = Symbol('di:inject')
@@ -10,11 +10,6 @@ export function Injectable(): ClassDecorator {
     Reflect.defineMetadata(INJECTABLE_METADATA_KEY, true, target)
   }
 }
-
-export function isInjectable(target: Function): boolean {
-  return Reflect.getMetadata(INJECTABLE_METADATA_KEY, target) === true
-}
-
 
 export function Inject(token: DecoratorToken): ParameterDecorator {
   return (target, _propertyKey, parameterIndex) => {
@@ -62,20 +57,47 @@ export class DecoratorContainer {
     const instance = this.instances.get(token)
 
     if(!instance) {
-      return this.createInstance<T>(provider) as T
+      return this.createInstance(provider) as T
     }
 
     return instance as T
   }
 
-  private createInstance<T = unknown>(provider: DecoratorProvider): T {
-    if('useValue' in provider) {
-      return provider.useValue as T
+  private createInstance(provider: DecoratorProvider): unknown {
+    if(this.isValueProvider(provider)) {
+      return provider.useValue
     }
-    return provider as T
+
+    if(this.isFactoryProvider(provider)) {
+      const deps = provider.inject?.map(token => this.resolve(token)) ?? []
+
+      return provider.useFactory(...deps)
+    }
+
+    if(this.isClassProvider(provider)) {
+      const targetClass = provider.useClass
+
+      if(this.isInjectable(targetClass)) {
+        //
+      }
+
+      Reflect.getMetadata(INJECT_METADATA_KEY, this)
+    }
+
+    if(this)
+    return provider
   }
+
+  private isClassProvider(provider: ClassProvider): provider is ClassProvider {
+    return 'useClass' in provider
+  }
+
   private isValueProvider(provider: DecoratorProvider): provider is ValueProvider {
     return 'useValue' in provider
+  }
+
+  private isFactoryProvider(provider: DecoratorProvider): provider is FactoryProvider {
+    return 'useFactory' in provider
   }
 
 
@@ -86,6 +108,10 @@ export class DecoratorContainer {
         | undefined
 
     return metadata ?? []
+  }
+
+  private isInjectable(target: Function): boolean {
+    return Reflect.getMetadata(INJECTABLE_METADATA_KEY, target) === true
   }
 
 }
