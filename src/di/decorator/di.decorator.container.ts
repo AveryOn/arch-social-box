@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import { DiContainerPort } from '~/di/ports/di.port'
 import {
   ClassDiProvider,
   DiProvider,
@@ -12,7 +13,7 @@ import {
 const INJECT_METADATA_KEY = Symbol('di:inject')
 const INJECTABLE_METADATA_KEY = Symbol('di:injectable')
 
-export class DecoratorContainer {
+export class DecoratorContainer implements DiContainerPort {
   private readonly providers = new Map<DiToken, DiProvider>()
   private readonly instances = new Map<DiToken, unknown>()
 

@@ -1,6 +1,7 @@
+import { DiContainerPort } from '~/di/ports/di.port'
 import { ClassConstructor, DiProvider, DiToken } from '~/di/types'
 
-export class ExplicitContainer {
+export class ExplicitContainer implements DiContainerPort {
   private readonly providers = new Map<DiToken, DiProvider>()
   private readonly instances = new Map<DiToken, unknown>()
 
