@@ -8,6 +8,7 @@ import { Logger } from '~/shared/logger'
 import { ExpressServer } from '~/transports/express/express.server'
 
 const DI = new DiModule(env.DI_MODE)
+const logger = Logger.create()
 
 const expressServer = new ExpressServer(
   {
@@ -23,13 +24,13 @@ const expressServer = new ExpressServer(
       },
       {
         token: LOGGER,
-        useValue: Logger.create()
+        useValue: logger
       }
     ]),
     host: env.APP_HOST,
     port: env.APP_PORT
   },
-  Logger.create()
+  logger
 )
 
 expressServer.start()
